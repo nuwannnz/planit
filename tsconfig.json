@@ -8,6 +8,9 @@
     },
     {
       "path": "./apps/planit-web"
+    },
+    {
+      "path": "./apps/planit-api"
     }
   ]
 }
