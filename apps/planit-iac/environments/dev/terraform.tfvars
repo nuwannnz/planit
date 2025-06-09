@@ -1,1 +1,0 @@
-aws_region = coalesce(var.aws_region, env("AWS_REGION"), env("AWS_DEFAULT_REGION"), "us-west-2")

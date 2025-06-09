@@ -17,5 +17,12 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = var.aws_region
+  region = "ap-south-1"
+}
+
+module "cognito" {
+  source = "../../modules/cognito"
+
+  environment  = "dev"
+  custom_domain = "planit"
 }
