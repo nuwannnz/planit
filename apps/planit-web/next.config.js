@@ -10,6 +10,25 @@ const nextConfig = {
   // Use this to set Nx-specific options
   // See: https://nx.dev/recipes/next/next-config-setup
   nx: {},
+  webpack: (config, { webpack, isServer }) => {
+    const envs = {};
+
+    Object.keys(process.env).forEach((env) => {
+      if (env.startsWith('NEXT_PUBLIC_')) {
+        envs[env] = process.env[env];
+      }
+    });
+
+    if (!isServer) {
+      config.plugins.push(
+        new webpack.DefinePlugin({
+          'process.env': JSON.stringify(envs),
+        })
+      );
+    }
+
+    return config;
+  },
 };
 
 const plugins = [
