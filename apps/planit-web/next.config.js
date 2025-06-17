@@ -29,6 +29,9 @@ const nextConfig = {
 
     return config;
   },
+  experimental: {
+    optimizePackageImports: ["@chakra-ui/react"],
+  }
 };
 
 const plugins = [
