@@ -1,6 +1,7 @@
 import { Field, Input, InputProps } from '@chakra-ui/react';
+import { BaseComponentProps } from '../../../generated/base';
 
-interface TextFieldProps extends InputProps {
+interface TextFieldProps extends BaseComponentProps, InputProps {
   label?: string;
   helperText?: string;
   errorText?: string;

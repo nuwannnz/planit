@@ -28,6 +28,7 @@ export default function Index() {
               disabled={isPending}
               errorText={state?.errors?.name?.join(',')}
               defaultValue={state?.formData?.get('name')?.toString() ?? ''}
+              dataTestId="name"
             />
 
             <TextField

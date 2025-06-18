@@ -1,6 +1,7 @@
 import { Heading, HeadingProps, Text, TextProps } from '@chakra-ui/react';
+import { BaseComponentProps } from '../../../generated/base';
 
-interface TypographyProps extends HeadingProps, TextProps {
+interface TypographyProps extends BaseComponentProps, HeadingProps, TextProps {
   variant?: 'body' | 'heading' | 'subheading';
   children?: React.ReactNode;
 }
