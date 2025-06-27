@@ -1,9 +1,9 @@
 'use client';
 
-import { Button, TextField, Typography } from '@./planit-shared-ui';
 import { registerUser } from '@/actions/auth/register';
 import { AuthPageLayout } from '@/components/AuthPageLayout/AuthPageLayout';
-import { Stack } from '@chakra-ui/react';
+import { Button, TextField, Typography } from '@/shared/components';
+import { Center, Stack } from '@mantine/core';
 import Link from 'next/link';
 import { useActionState, useEffect } from 'react';
 
@@ -17,7 +17,7 @@ export default function Index() {
     <AuthPageLayout title="Create an account">
       <>
         <form action={action}>
-          <Stack gap={4}>
+          <Stack gap={12}>
             <TextField
               type="text"
               name="name"
@@ -28,7 +28,6 @@ export default function Index() {
               disabled={isPending}
               errorText={state?.errors?.name?.join(',')}
               defaultValue={state?.formData?.get('name')?.toString() ?? ''}
-              dataTestId="name"
             />
 
             <TextField
@@ -55,22 +54,24 @@ export default function Index() {
               defaultValue={state?.formData?.get('password')?.toString() ?? ''}
             />
             <Button
+              mt={10}
               type="submit"
               disabled={isPending}
               loading={isPending}
-              loadingText="Signing up..."
             >
               Sign up
             </Button>
           </Stack>
         </form>
 
-        <Typography>
-          Already have an account?{' '}
-          <Link href="#" className="font-semibold ">
-            log in here
-          </Link>
-        </Typography>
+        <Center mt={10}>
+          <Typography>
+            Already have an account?{' '}
+            <Link href="#" className="font-semibold ">
+              log in here
+            </Link>
+          </Typography>
+        </Center>
       </>
     </AuthPageLayout>
   );

@@ -1,21 +1,21 @@
-import { Typography } from '@./planit-shared-ui';
-import { Container, Center, Stack } from '@chakra-ui/react';
+import { Typography } from '@/shared/components';
+import { Container, Center, Stack } from '@mantine/core';
 
 interface AuthPageLayoutProps {
   title?: string;
   children?: React.ReactNode;
 }
 export const AuthPageLayout = ({ title, children }: AuthPageLayoutProps) => (
-  <Container>
-    <Container maxW={'md'} pt={20}>
-      <Center>
-        {/* TODO ADD logo */}
-        <Typography variant="heading" size="xl">
-          {title}
-        </Typography>
-      </Center>
+  <Container fluid pt={20}>
+    <Center>
+      {/* TODO ADD logo */}
+      <Typography variant="heading" size="xl">
+        {title}
+      </Typography>
+    </Center>
 
-      <Stack mt={10} gap={2}>
+    <Container maw={500} p={0}>
+      <Stack mt={10} gap={4}>
         {children}
       </Stack>
     </Container>

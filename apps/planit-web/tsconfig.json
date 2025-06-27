@@ -48,9 +48,4 @@
     "eslint.config.cjs",
     "eslint.config.mjs"
   ],
-  "references": [
-    {
-      "path": "../../libs/planit-shared-ui"
-    }
-  ]
 }

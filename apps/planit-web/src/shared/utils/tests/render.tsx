@@ -1,6 +1,6 @@
-import { ThemeProvider } from '@./planit-shared-ui';
+import { CoreProviders } from '@/shared/providers/CoreProviders';
 import { render } from '@testing-library/react';
 
 export function renderComponent(components: React.ReactElement) {
-  return render(<ThemeProvider>{components}</ThemeProvider>);
+  return render(<CoreProviders>{components}</CoreProviders>);
 }
