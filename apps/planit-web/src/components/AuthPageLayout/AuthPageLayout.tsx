@@ -14,7 +14,7 @@ export const AuthPageLayout = ({ title, children }: AuthPageLayoutProps) => (
       </Typography>
     </Center>
 
-    <Container maw={500} p={0}>
+    <Container maw={320} p={0}>
       <Stack mt={10} gap={4}>
         {children}
       </Stack>

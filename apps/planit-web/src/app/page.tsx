@@ -1,7 +1,5 @@
-export default function Index() {
+import { redirect } from 'next/navigation';
 
-  return (
-    <div>
-    </div>
-  );
+export default function Index() {
+  return redirect('/me');
 }
