@@ -2,7 +2,7 @@
 
 import { AuthPageLayout } from '@/components/authPageLayout/AuthPageLayout';
 import { Button, TextField, Typography } from '@/shared/components';
-import { Center, Stack } from '@mantine/core';
+import { Alert, Center, Stack } from '@mantine/core';
 import Link from 'next/link';
 import { useActionState } from 'react';
 import { loginUser } from '@/actions/auth/login';
@@ -26,7 +26,6 @@ export default function Index() {
               errorText={state?.errors?.email?.join(',')}
               defaultValue={state?.formData?.get('email')?.toString() ?? ''}
             />
-
             <TextField
               type="password"
               name="password"
@@ -38,7 +37,6 @@ export default function Index() {
               errorText={state?.errors?.password?.join(',')}
               defaultValue={state?.formData?.get('password')?.toString() ?? ''}
             />
-
             <Button
               mt={10}
               type="submit"
@@ -47,6 +45,9 @@ export default function Index() {
             >
               Login
             </Button>
+            {!isPending && state?.success === false && state.message && (
+              <Alert color="red">{state.message}</Alert>
+            )}
           </Stack>
         </form>
         <Center mt={10}>
