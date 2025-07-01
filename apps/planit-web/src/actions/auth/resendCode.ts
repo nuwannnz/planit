@@ -1,12 +1,13 @@
 'use server';
 
 import { AppEnv } from '@/shared/services/AppEnv';
-import { ENV_KEYS } from '@/shared/types/env';
+import { EnvKeys } from '@/shared/types/env';
 import {
   CognitoIdentityProviderClient,
   ResendConfirmationCodeCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { FormState, ResendCodeFormSchema } from './resendCode.schema';
+import { FormState, ResendCodeFormSchema } from './schemas/resendCode.schema';
+import Logger, { LogContext, LogLevel } from '@/shared/services/logger';
 
 export async function resendCode(
   _formState: FormState,
@@ -27,20 +28,24 @@ export async function resendCode(
   const client = new CognitoIdentityProviderClient({});
 
   const command = new ResendConfirmationCodeCommand({
-    ClientId: AppEnv.getValue(ENV_KEYS.AWS_COGNITO_CLIENT_APP_ID),
+    ClientId: AppEnv.getValue(EnvKeys.AwsCognitoClientAppId),
     Username: validatedFields.data.email,
   });
 
   try {
-    const result = await client.send(command);
-    console.log('Resend confirmation code result:', result);
+    await client.send(command);
     return {
       message: 'A new confirmation code has been sent to your email.',
       success: true,
       formData,
     };
   } catch (e: unknown) {
-    console.error('Error during resend confirmation code:', e);
+    Logger.log(
+      LogLevel.Error,
+      'Error during resend confirmation code:',
+      e,
+      LogContext.Auth
+    );
     return {
       message: 'An error occurred during account confirmation.',
       success: false,

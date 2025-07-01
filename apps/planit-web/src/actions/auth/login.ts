@@ -1,7 +1,7 @@
 'use server';
 
 import { AppEnv } from '@/shared/services/AppEnv';
-import { ENV_KEYS } from '@/shared/types/env';
+import { EnvKeys } from '@/shared/types/env';
 import {
   CognitoIdentityProviderClient,
   InitiateAuthCommand,
@@ -10,10 +10,11 @@ import {
   UserNotConfirmedException,
   UserNotFoundException,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { FormState, LoginFormSchema } from './login.schema';
+import { FormState, LoginFormSchema } from './schemas/login.schema';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { COOKIE_KEYS } from '@/shared/types/cookies';
+import { CookieKeys } from '@/shared/types/cookies';
+import Logger, { LogContext, LogLevel } from '@/shared/services/logger';
 
 export async function loginUser(
   _formState: FormState,
@@ -35,7 +36,7 @@ export async function loginUser(
   const client = new CognitoIdentityProviderClient({});
 
   const command = new InitiateAuthCommand({
-    ClientId: AppEnv.getValue(ENV_KEYS.AWS_COGNITO_CLIENT_APP_ID),
+    ClientId: AppEnv.getValue(EnvKeys.AwsCognitoClientAppId),
     AuthFlow: 'USER_PASSWORD_AUTH',
     AuthParameters: {
       USERNAME: validatedFields.data.email,
@@ -61,14 +62,14 @@ export async function loginUser(
         sameSite: true,
       };
 
-      cookieStore.set(COOKIE_KEYS.ID_TOKEN, idToken, options);
-      cookieStore.set(COOKIE_KEYS.ACCESS_TOKEN, accessToken, options);
-      cookieStore.set(COOKIE_KEYS.REFRESH_TOKEN, refreshToken, options);
+      cookieStore.set(CookieKeys.IdToken, idToken, options);
+      cookieStore.set(CookieKeys.AccessToken, accessToken, options);
+      cookieStore.set(CookieKeys.RefreshToken, refreshToken, options);
     } else {
       throw new Error();
     }
   } catch (e: unknown) {
-    console.error('Error during user login:', e);
+    Logger.log(LogLevel.Error, 'Error during user login:', e, LogContext.Auth);
     if (e instanceof UserNotConfirmedException) {
       return redirect(
         `/auth/verify?n=${btoa(encodeURIComponent(validatedFields.data.email))}`
@@ -92,5 +93,5 @@ export async function loginUser(
     };
   }
 
-  redirect('/me');
+  return redirect('/me');
 }

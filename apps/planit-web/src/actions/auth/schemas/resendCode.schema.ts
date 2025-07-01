@@ -1,5 +1,5 @@
 import z from 'zod';
-import { BaseFormState } from '../types';
+import { BaseFormState } from '../../types';
 
 export const ResendCodeFormSchema = z.object({
   email: z.string().email(),

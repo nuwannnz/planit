@@ -1,13 +1,14 @@
 'use server';
 
 import { AppEnv } from '@/shared/services/AppEnv';
-import { ENV_KEYS } from '@/shared/types/env';
+import { EnvKeys } from '@/shared/types/env';
 import {
   CognitoIdentityProviderClient,
   SignUpCommand,
   UsernameExistsException,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { FormState, SignupFormSchema } from './register.schema';
+import { FormState, SignupFormSchema } from './schemas/register.schema';
+import Logger, { LogContext, LogLevel } from '@/shared/services/logger';
 
 export async function registerUser(
   _formState: FormState,
@@ -30,22 +31,26 @@ export async function registerUser(
   const client = new CognitoIdentityProviderClient({});
 
   const command = new SignUpCommand({
-    ClientId: AppEnv.getValue(ENV_KEYS.AWS_COGNITO_CLIENT_APP_ID),
+    ClientId: AppEnv.getValue(EnvKeys.AwsCognitoClientAppId),
     Username: validatedFields.data.email,
     Password: validatedFields.data.password,
     UserAttributes: [{ Name: 'name', Value: validatedFields.data.name }],
   });
 
   try {
-    const result = await client.send(command);
-    console.log('User registration result:', result);
+    await client.send(command);
     return {
       message: 'User registered successfully',
       success: true,
       formData,
     };
   } catch (e: unknown) {
-    console.error('Error during user registration:', e);
+    Logger.log(
+      LogLevel.Error,
+      'Error during user registration:',
+      e,
+      LogContext.Auth
+    );
     if (e instanceof UsernameExistsException) {
       return {
         errors: { email: ['This email is already registered.'] },

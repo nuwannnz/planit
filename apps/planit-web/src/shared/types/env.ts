@@ -1,4 +1,4 @@
-export enum ENV_KEYS {
-  AWS_REGION = 'AWS_REGION',
-  AWS_COGNITO_CLIENT_APP_ID = 'AWS_COGNITO_CLIENT_APP_ID',
+export enum EnvKeys {
+  AwsRegion = 'AWS_REGION',
+  AwsCognitoClientAppId = 'AWS_COGNITO_CLIENT_APP_ID',
 }

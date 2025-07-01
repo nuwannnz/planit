@@ -6,11 +6,14 @@ import {
 
 import '@mantine/core/styles.css';
 import './global.css';
+import logger from '@/shared/services/logger/Logger';
 
 export const metadata = {
   title: 'Welcome to planIt',
   description: 'Plan your life',
 };
+
+logger.canLog = true;
 
 export default function RootLayout({
   children,

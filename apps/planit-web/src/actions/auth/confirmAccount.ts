@@ -1,14 +1,18 @@
 'use server';
 
 import { AppEnv } from '@/shared/services/AppEnv';
-import { ENV_KEYS } from '@/shared/types/env';
+import { EnvKeys } from '@/shared/types/env';
 import {
   CognitoIdentityProviderClient,
   ConfirmSignUpCommand,
   ExpiredCodeException,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { FormState, ConfirmAccountFormSchema } from './confirmAccount.schema';
+import {
+  FormState,
+  ConfirmAccountFormSchema,
+} from './schemas/confirmAccount.schema';
 import { redirect } from 'next/navigation';
+import Logger, { LogContext, LogLevel } from '@/shared/services/logger';
 
 export async function confirmAccount(
   _formState: FormState,
@@ -30,17 +34,20 @@ export async function confirmAccount(
   const client = new CognitoIdentityProviderClient({});
 
   const command = new ConfirmSignUpCommand({
-    ClientId: AppEnv.getValue(ENV_KEYS.AWS_COGNITO_CLIENT_APP_ID),
+    ClientId: AppEnv.getValue(EnvKeys.AwsCognitoClientAppId),
     Username: validatedFields.data.email,
     ConfirmationCode: validatedFields.data.confirmationCode,
   });
 
   try {
-    const result = await client.send(command);
-    console.log('User account confirmed result:', result);
-    return redirect('/auth/login');
+    await client.send(command);
   } catch (e: unknown) {
-    console.error('Error during user account confirmation:', e);
+    Logger.log(
+      LogLevel.Error,
+      'Error during user account confirmation:',
+      e,
+      LogContext.Auth
+    );
 
     if (e instanceof ExpiredCodeException) {
       return {
@@ -55,4 +62,5 @@ export async function confirmAccount(
       formData,
     };
   }
+  return redirect('/auth/login');
 }

@@ -1,5 +1,5 @@
 import z from 'zod';
-import { BaseFormState } from '../types';
+import { BaseFormState } from '../../types';
 
 export const ConfirmAccountFormSchema = z.object({
   email: z.string().email(),
