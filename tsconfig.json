@@ -11,9 +11,6 @@
     },
     {
       "path": "./apps/planit-api"
-    },
-    {
-      "path": "./libs/planit-shared-ui"
     }
   ]
 }
