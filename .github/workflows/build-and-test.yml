@@ -36,4 +36,4 @@ jobs:
         run: npx nx run-many --target=build --all
 
       - name: Nx run all tests
-        run: npx nx run-many --target=test --all
+        run: npx nx run-many --target=test --all -- --watch=false
