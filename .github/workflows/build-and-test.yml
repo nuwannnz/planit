@@ -1,0 +1,39 @@
+name: Build and Test PlanIt monorepo
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Nx lint all
+        run: npx nx run-many --target=lint --all
+
+      - name: Nx build all
+        run: npx nx run-many --target=build --all
+
+      - name: Nx run all tests
+        run: npx nx run-many --target=test --all
