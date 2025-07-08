@@ -3,7 +3,7 @@ name: Build and Test PlanIt monorepo
 on:
   pull_request:
     branches:
-      - '**'
+      - 'main'
 
 jobs:
   build-and-test:
