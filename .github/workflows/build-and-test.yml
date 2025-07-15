@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: 20
 
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+
       - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
