@@ -9,6 +9,7 @@ on:
 jobs:
   Deploy-Pull-Request:
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - uses: actions/checkout@v2
 
@@ -22,4 +23,14 @@ jobs:
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        id: vercel_deploy
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > deployment_output.txt
+
+      - name: Output Vercel Deployment Details
+        run: |
+          echo 'Deployment output:'
+          cat deployment_output.txt
+          echo ''
+          DEPLOY_URL=$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' deployment_output.txt | head -n 1)
+          echo "::notice title=Vercel Deployment URL::$DEPLOY_URL"
+          echo "Deployed URL: $DEPLOY_URL"
