@@ -46,6 +46,7 @@ export const TaskCard = ({ task }: TaskCardProps) => (
     shadow="xs"
     padding="xs"
     radius="sm"
+    withBorder
     style={{ cursor: 'pointer', marginBottom: '12px' }}
     className="hover:shadow-md transition-shadow"
   >

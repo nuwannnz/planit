@@ -21,7 +21,7 @@ export const DayColumn = ({ day, tasks }: DayColumnProps) => {
         minWidth: '280px',
         maxWidth: '320px',
         flex: 1,
-        backgroundColor: 'var(--mantine-color-gray-1)',
+        backgroundColor: 'var(--mantine-color-gray-0)',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',

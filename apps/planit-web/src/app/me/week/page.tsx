@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Group, Stack, Container, Flex, Box } from '@mantine/core';
+import { Group, Stack, Flex, Box } from '@mantine/core';
 import { IconPlus, IconSearch, IconUser } from '@tabler/icons-react';
 import { Button } from '@/shared/components/button/Button';
 import { DayColumn } from '@/components/tasks/DayColumn/DayColumn';
 import { Task } from '@/components/tasks/TaskCard/TaskCard';
 import { TextField, Typography } from '@/shared/components';
+import { AppPageLayout } from '@/components/appShell/AppPageLayout';
 
 type DayTasks = Record<string, Task[]>;
 
@@ -20,7 +21,7 @@ const DAYS_OF_WEEK = [
   'Sunday',
 ];
 
-export default function WeeklyTaskManager() {
+export default function Index() {
   const [tasks] = useState<DayTasks>({
     Monday: [
       {
@@ -76,70 +77,61 @@ export default function WeeklyTaskManager() {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
-    <Box
-      style={{
-        height: '100vh',
-        backgroundColor: 'var(--mantine-color-white-1)',
-      }}
-      p="sm"
-      id="weekly-task-manager"
-    >
-      <Container fluid h="100%">
-        <Flex direction="column" gap="xl" h="100%">
-          {/* Header */}
-          <Stack gap="md">
-            <Group justify="space-between" align="flex-start">
-              <Stack gap="xs">
-                <Typography variant="heading" order={1} size="h2">
-                  Week
-                </Typography>
-              </Stack>
-              <Button
-                type="button"
-                leftSection={<IconPlus size={16} />}
-                variant="light"
-              >
-                Add Task
-              </Button>
-            </Group>
+    <AppPageLayout>
+      <Flex direction="column" gap="xl" h="100%">
+        {/* Header */}
+        <Stack gap="md">
+          <Group justify="space-between" align="flex-start">
+            <Stack gap="xs">
+              <Typography variant="heading" order={1} size="h2">
+                Week
+              </Typography>
+            </Stack>
+            <Button
+              type="button"
+              leftSection={<IconPlus size={16} />}
+              variant="light"
+            >
+              Add Task
+            </Button>
+          </Group>
 
-            {/* Search and filters */}
-            <Group gap="md">
-              <TextField
-                placeholder="Search tasks..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.currentTarget.value)}
-                leftSection={<IconSearch size={16} />}
-                style={{ flex: 1, maxWidth: '400px' }}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                leftSection={<IconUser size={16} />}
-                color="gray"
-              >
-                Filter
-              </Button>
-            </Group>
-          </Stack>
+          {/* Search and filters */}
+          <Group gap="md">
+            <TextField
+              placeholder="Search tasks..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.currentTarget.value)}
+              leftSection={<IconSearch size={16} />}
+              style={{ flex: 1, maxWidth: '400px' }}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              leftSection={<IconUser size={16} />}
+              color="gray"
+            >
+              Filter
+            </Button>
+          </Group>
+        </Stack>
 
-          {/* Weekly columns */}
-          <Box
-            style={{
-              overflowX: 'auto',
-              paddingBottom: '24px',
-              flex: 1,
-              minHeight: 0, // This is important for Firefox flex overflow
-            }}
-          >
-            <Flex gap="xl" style={{ minWidth: 'fit-content', height: '100%' }}>
-              {DAYS_OF_WEEK.map((day) => (
-                <DayColumn key={day} day={day} tasks={tasks[day] || []} />
-              ))}
-            </Flex>
-          </Box>
-        </Flex>
-      </Container>
-    </Box>
+        {/* Weekly columns */}
+        <Box
+          style={{
+            overflowX: 'auto',
+            paddingBottom: '24px',
+            flex: 1,
+            minHeight: 0, // For Firefox flex overflow
+          }}
+        >
+          <Flex gap="lg" style={{ minWidth: 'fit-content', height: '100%' }}>
+            {DAYS_OF_WEEK.map((day) => (
+              <DayColumn key={day} day={day} tasks={tasks[day] || []} />
+            ))}
+          </Flex>
+        </Box>
+      </Flex>
+    </AppPageLayout>
   );
 }
