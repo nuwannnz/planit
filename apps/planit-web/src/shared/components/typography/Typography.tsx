@@ -8,7 +8,11 @@ type TypographyProps = BaseComponentProps &
     children?: React.ReactNode;
   };
 
-export function Typography({ variant, children, ...props }: TypographyProps) {
+export function Typography({
+  variant = 'body',
+  children,
+  ...props
+}: TypographyProps) {
   if (variant === 'heading') {
     return (
       <Title order={1} {...props}>
