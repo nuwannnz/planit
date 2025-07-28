@@ -25,7 +25,7 @@ jobs:
 
       - name: Download package from S3
         run: |
-          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/${{ github.event.inputs.tag_name }}.zip package.zip
+          aws s3 cp s3://${{ secrets.PACKAGE_ARTIFACTS_BUCKET_NAME }}/${{ github.event.inputs.tag_name }}.zip package.zip
 
       - name: Unzip package
         run: |
