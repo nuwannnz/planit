@@ -30,6 +30,7 @@ jobs:
             git log -1 --pretty=%B
             echo "EOF"
           } >> $GITHUB_OUTPUT
+
       - name: Parse commit message
         id: parse
         run: |
