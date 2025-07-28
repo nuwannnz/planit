@@ -25,7 +25,11 @@ jobs:
       - name: Get last commit message
         id: last_commit
         run: |
-          echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+          {
+            echo "message<<EOF"
+            git log -1 --pretty=%B
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Parse commit message
         id: parse
