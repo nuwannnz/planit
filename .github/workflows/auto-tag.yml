@@ -1,0 +1,103 @@
+name: Auto Tag
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  auto-tag:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get last commit message
+        id: last_commit
+        run: |
+          echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+
+      - name: Parse commit message
+        id: parse
+        run: |
+          msg="${{ steps.last_commit.outputs.message }}"
+          echo "Commit message: $msg"
+          if [[ $msg =~ ^(feat|fix|chore|ci):[[:space:]]*\(([^)]+)\)[[:space:]]*\[([^]]+)\] ]]; then
+            type="${BASH_REMATCH[1]}"
+            ticket="${BASH_REMATCH[2]}"
+            change_type="${BASH_REMATCH[3]}"
+            echo "type=$type" >> $GITHUB_OUTPUT
+            echo "ticket=$ticket" >> $GITHUB_OUTPUT
+            echo "change_type=$change_type" >> $GITHUB_OUTPUT
+          else
+            echo "type=none" >> $GITHUB_OUTPUT
+            echo "ticket=none" >> $GITHUB_OUTPUT
+            echo "change_type=none" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if should tag
+        id: should_tag
+        run: |
+          if [[ "${{ steps.parse.outputs.change_type }}" == "web" || "${{ steps.parse.outputs.change_type }}" == "api" ]]; then
+            echo "tag=true" >> $GITHUB_OUTPUT
+          else
+            echo "tag=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump version and tag (web)
+        if: steps.should_tag.outputs.tag == 'true' && steps.parse.outputs.change_type == 'web'
+        run: |
+          cd apps/planit-web
+          version=$(jq -r .version package.json)
+          IFS='.' read -r major minor patch <<< "$version"
+          if [[ "${{ steps.parse.outputs.type }}" == "feat" ]]; then
+            minor=$((minor+1))
+            patch=0
+          elif [[ "${{ steps.parse.outputs.type }}" == "fix" ]]; then
+            patch=$((patch+1))
+          fi
+          new_version="$major.$minor.$patch"
+          jq --arg v "$new_version" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
+          cd ../..
+          tag="v${new_version}-web"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add apps/planit-web/package.json
+          git commit -m "chore: bump web version to $new_version [skip ci]"
+          git tag $tag
+          git push origin main --tags
+          git push origin main
+
+      - name: Bump version and tag (api)
+        if: steps.should_tag.outputs.tag == 'true' && steps.parse.outputs.change_type == 'api'
+        run: |
+          cd apps/planit-api
+          version=$(jq -r .version package.json)
+          IFS='.' read -r major minor patch <<< "$version"
+          if [[ "${{ steps.parse.outputs.type }}" == "feat" ]]; then
+            minor=$((minor+1))
+            patch=0
+          elif [[ "${{ steps.parse.outputs.type }}" == "fix" ]]; then
+            patch=$((patch+1))
+          fi
+          new_version="$major.$minor.$patch"
+          jq --arg v "$new_version" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
+          cd ../..
+          tag="v${new_version}-api"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add apps/planit-api/package.json
+          git commit -m "chore: bump api version to $new_version [skip ci]"
+          git tag $tag
+          git push origin main --tags
+          git push origin main

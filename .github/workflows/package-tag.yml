@@ -1,0 +1,82 @@
+name: Package Tag
+
+on:
+  push:
+    tags:
+      - 'v*-web'
+      - 'v*-api'
+
+jobs:
+  package-web:
+    if: startsWith(github.ref, 'refs/tags/v') && endsWith(github.ref, '-web')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build with Nx
+        run: npx nx build planit-web
+
+      - name: Zip build output
+        run: |
+          cd dist/apps/planit-web
+          zip -r ../../../${{ github.ref_name }}.zip .
+          cd ../../../
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp ./${{ github.ref_name }}.zip s3://${{ secrets.S3_BUCKET_NAME }}/${{ github.ref_name }}.zip
+
+  package-api:
+    if: startsWith(github.ref, 'refs/tags/v') && endsWith(github.ref, '-api')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build with Nx
+        run: npx nx build planit-api
+
+      - name: Zip build output
+        run: |
+          cd dist/apps/planit-api
+          zip -r ../../../${{ github.ref_name }}.zip .
+          cd ../../../
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp ./${{ github.ref_name }}.zip s3://${{ secrets.S3_BUCKET_NAME }}/${{ github.ref_name }}.zip

@@ -1,0 +1,47 @@
+name: Deploy Web Dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name to deploy (e.g. v1.2.3-web)'
+        required: true
+        type: string
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  deploy-web-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Download package from S3
+        run: |
+          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/${{ github.event.inputs.tag_name }}.zip package.zip
+
+      - name: Unzip package
+        run: |
+          unzip package.zip -d package
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy to Vercel (dev)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          cd package
+          vercel deploy --prebuilt --token $VERCEL_TOKEN --yes --env ENV=dev
