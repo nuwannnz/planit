@@ -6,7 +6,7 @@ import { Typography } from '@/shared/components';
 export default function Index() {
   return (
     <AppPageLayout>
-      <Typography variant="subheading">Dashboard</Typography>
+      <Typography variant="subheading">Projects</Typography>
     </AppPageLayout>
   );
 }

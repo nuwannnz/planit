@@ -2,13 +2,12 @@ import {
   Button as MantineButton,
   ButtonProps as MantineButtonProps,
 } from '@mantine/core';
-import { BaseComponentProps } from '../base';
 import { BLACK } from '@/shared/branding/colors';
-import { DOMAttributes } from 'react';
 
-type ButtonProps = BaseComponentProps &
-  DOMAttributes<HTMLButtonElement> &
-  MantineButtonProps & { type: 'button' | 'submit' | 'reset' };
+type ButtonProps = React.PropsWithChildren<
+  React.ComponentPropsWithoutRef<'button'> &
+    MantineButtonProps & { type: 'button' | 'submit' | 'reset' }
+>;
 
 export const Button = (props: ButtonProps) => {
   return (
