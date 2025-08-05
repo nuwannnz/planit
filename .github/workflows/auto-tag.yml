@@ -10,12 +10,15 @@ on:
 jobs:
   auto-tag:
     if: github.event.pull_request.merged == true
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.PAT }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -34,9 +37,11 @@ jobs:
       - name: Parse commit message
         id: parse
         run: |
-          msg="${{ steps.last_commit.outputs.message }}"
-          echo "Commit message: $msg"
-          if [[ $msg =~ ^(feat|fix|chore|ci):[[:space:]]*\([^)]+\)[[:space:]]*\[[^]]+\] ]]; then
+          bash -c '
+            msg="${{ steps.last_commit.outputs.message }}"
+            echo "Commit message: $msg"
+          regex="^(feat|fix|chore|ci):[[:space:]]*\\(([^)]*)\\)[[:space:]]*\\[([^]]*)\\]"
+          if [[ "$msg" =~ $regex ]]; then
             type="${BASH_REMATCH[1]}"
             ticket="${BASH_REMATCH[2]}"
             change_type="${BASH_REMATCH[3]}"
@@ -48,18 +53,25 @@ jobs:
             echo "ticket=none" >> $GITHUB_OUTPUT
             echo "change_type=none" >> $GITHUB_OUTPUT
           fi
+          '
 
       - name: Check if should tag
         id: should_tag
         run: |
-          if [[ "${{ steps.parse.outputs.change_type }}" == "web" || "${{ steps.parse.outputs.change_type }}" == "api" ]]; then
-            echo "tag=true" >> $GITHUB_OUTPUT
+          change_type="${{ steps.parse.outputs.change_type }}"
+          if [[ "$change_type" == *"web"* ]]; then
+            echo "tag_web=true" >> $GITHUB_OUTPUT
           else
-            echo "tag=false" >> $GITHUB_OUTPUT
+            echo "tag_web=false" >> $GITHUB_OUTPUT
+          fi
+          if [[ "$change_type" == *"api"* ]]; then
+            echo "tag_api=true" >> $GITHUB_OUTPUT
+          else
+            echo "tag_api=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Bump version and tag (web)
-        if: steps.should_tag.outputs.tag == 'true' && steps.parse.outputs.change_type == 'web'
+        if: steps.should_tag.outputs.tag_web == 'true'
         run: |
           cd apps/planit-web
           version=$(jq -r .version package.json)
@@ -74,16 +86,16 @@ jobs:
           jq --arg v "$new_version" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
           cd ../..
           tag="v${new_version}-web"
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add apps/planit-web/package.json
-          git commit -m "chore: bump web version to $new_version [skip ci]"
+          git commit -m "chore: [web] bump version to $new_version"
           git tag $tag
-          git push origin main --tags
           git push origin main
+          git push origin main --tags
 
       - name: Bump version and tag (api)
-        if: steps.should_tag.outputs.tag == 'true' && steps.parse.outputs.change_type == 'api'
+        if: steps.should_tag.outputs.tag_api == 'true'
         run: |
           cd apps/planit-api
           version=$(jq -r .version package.json)
@@ -98,10 +110,10 @@ jobs:
           jq --arg v "$new_version" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
           cd ../..
           tag="v${new_version}-api"
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add apps/planit-api/package.json
-          git commit -m "chore: bump api version to $new_version [skip ci]"
+          git commit -m "chore: [api] bump version to $new_version"
           git tag $tag
-          git push origin main --tags
           git push origin main
+          git push origin main --tags
