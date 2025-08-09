@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import { Group, Stack, Flex, Box } from '@mantine/core';
-import { IconPlus, IconSearch, IconUser } from '@tabler/icons-react';
-import { Button } from '@/shared/components/button/Button';
 import { DayColumn } from '@/components/tasks/DayColumn/DayColumn';
 import { Task } from '@/components/tasks/TaskCard/TaskCard';
-import { TextField, Typography } from '@/shared/components';
+import { Typography } from '@/shared/components';
+import { getCurrentWeekRange } from '@/shared/utils/dates/weeks';
 import { AppPageLayout } from '@/components/appShell/AppPageLayout';
 
 type DayTasks = Record<string, Task[]>;
@@ -74,8 +73,6 @@ export default function Index() {
     Sunday: [],
   });
 
-  const [searchTerm, setSearchTerm] = useState('');
-
   return (
     <AppPageLayout>
       <Flex direction="column" gap="xl" h="100%">
@@ -83,36 +80,15 @@ export default function Index() {
         <Stack gap="md">
           <Group justify="space-between" align="flex-start">
             <Stack gap="xs">
-              <Typography variant="heading" order={1} size="h2">
-                Week
-              </Typography>
+              <Group gap="sm" align="end">
+                <Typography variant="heading" order={1} size="h2">
+                  Week
+                </Typography>
+                <Typography c="dimmed" size="md" pb={2}>
+                  ({getCurrentWeekRange()})
+                </Typography>
+              </Group>
             </Stack>
-            <Button
-              type="button"
-              leftSection={<IconPlus size={16} />}
-              variant="light"
-            >
-              Add Task
-            </Button>
-          </Group>
-
-          {/* Search and filters */}
-          <Group gap="md">
-            <TextField
-              placeholder="Search tasks..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.currentTarget.value)}
-              leftSection={<IconSearch size={16} />}
-              style={{ flex: 1, maxWidth: '400px' }}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              leftSection={<IconUser size={16} />}
-              color="gray"
-            >
-              Filter
-            </Button>
           </Group>
         </Stack>
 
