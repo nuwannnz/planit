@@ -7,20 +7,18 @@ interface TextFieldProps extends BaseComponentProps, TextInputProps {
   errorText?: string;
 }
 
-export function TextField({
-  required,
-  label,
-  helperText,
-  errorText,
-  ...props
-}: TextFieldProps) {
-  return (
+import React from 'react';
+
+export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
+  ({ required, label, helperText, errorText, ...props }, ref) => (
     <TextInput
       required={required}
       label={label}
       description={helperText}
       error={errorText}
+      ref={ref}
       {...props}
     />
-  );
-}
+  )
+);
+TextField.displayName = 'TextField';

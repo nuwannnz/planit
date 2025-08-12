@@ -42,7 +42,7 @@ export default [
     ],
     // Override or add rules here
     rules: {
-      'sort-imports': 'error',
+      // 'sort-imports': 'error', // TODO
     },
   },
 ];

@@ -1,4 +1,5 @@
-import { Paper, Stack, Group, Box } from '@mantine/core';
+import { Box, Group, Paper, Stack } from '@mantine/core';
+import { AddColumnItem } from './AddColumnItem';
 import { Typography } from '@/shared/components';
 import { ReactNode } from 'react';
 
@@ -8,6 +9,7 @@ interface KanbanColumnProps {
   headerRight?: ReactNode;
   minWidth?: string;
   maxWidth?: string;
+  canAddItems?: boolean;
 }
 
 export const KanbanColumn = ({
@@ -16,6 +18,7 @@ export const KanbanColumn = ({
   headerRight,
   minWidth = '280px',
   maxWidth = '320px',
+  canAddItems = true,
 }: KanbanColumnProps) => {
   return (
     <Paper
@@ -50,6 +53,14 @@ export const KanbanColumn = ({
           {headerRight}
         </Group>
         <Box style={{ flex: 1, overflowY: 'auto' }}>{children}</Box>
+        {canAddItems && (
+          <AddColumnItem
+            onSubmit={(value) => {
+              // TODO: handle add item logic here
+              console.log('Add item:', value);
+            }}
+          />
+        )}
       </Stack>
     </Paper>
   );

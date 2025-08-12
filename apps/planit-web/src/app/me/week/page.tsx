@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Group, Stack, Flex, Box } from '@mantine/core';
+import { Box, Flex, Group, Stack } from '@mantine/core';
 import { DayColumn } from '@/components/tasks/DayColumn/DayColumn';
 import { Task } from '@/components/tasks/TaskCard/TaskCard';
 import { Typography } from '@/shared/components';
@@ -30,6 +30,62 @@ export default function Index() {
         priority: 'high',
         assignee: 'NK',
         estimatedTime: '2h',
+      },
+      {
+        id: '2',
+        title: 'Review project requirements',
+        category: 'PLANNING',
+        priority: 'medium',
+        assignee: 'JD',
+      },
+      {
+        id: '2',
+        title: 'Review project requirements',
+        category: 'PLANNING',
+        priority: 'medium',
+        assignee: 'JD',
+      },
+      {
+        id: '2',
+        title: 'Review project requirements',
+        category: 'PLANNING',
+        priority: 'medium',
+        assignee: 'JD',
+      },
+      {
+        id: '2',
+        title: 'Review project requirements',
+        category: 'PLANNING',
+        priority: 'medium',
+        assignee: 'JD',
+      },
+      {
+        id: '2',
+        title: 'Review project requirements',
+        category: 'PLANNING',
+        priority: 'medium',
+        assignee: 'JD',
+      },
+      {
+        id: '2',
+        title: 'Review project requirements',
+        category: 'PLANNING',
+        priority: 'medium',
+        assignee: 'JD',
+      },
+      {
+        id: '2',
+        title: 'Review project requirements',
+        category: 'PLANNING',
+        priority: 'medium',
+        assignee: 'JD',
+      },
+      {
+        id: '2',
+        title: 'Review project requirements',
+        category: 'PLANNING',
+        priority: 'medium',
+        assignee: 'JD',
       },
       {
         id: '2',
