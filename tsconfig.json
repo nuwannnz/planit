@@ -11,6 +11,9 @@
     },
     {
       "path": "./apps/planit-api"
+    },
+    {
+      "path": "./apps/planit-api-mock"
     }
   ]
 }
