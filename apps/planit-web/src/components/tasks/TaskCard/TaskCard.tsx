@@ -1,45 +1,34 @@
 import { Typography } from '@/shared/components';
-import { Card, Stack, Group, Avatar } from '@mantine/core';
-import { IconClock } from '@tabler/icons-react';
-import { Label } from '@/shared/components/label/Label';
+import { Card, Stack, Group } from '@mantine/core';
+import { Task } from '@./types';
 
-const PRIORITY_COLORS = {
-  low: 'green',
-  medium: 'yellow',
-  high: 'red',
-} as const;
-
-const CATEGORY_COLORS = [
-  'violet',
-  'blue',
-  'indigo',
-  'pink',
-  'orange',
-  'teal',
-  'cyan',
-] as const;
-
-export interface Task {
-  id: string;
-  title: string;
-  description?: string;
-  priority: 'low' | 'medium' | 'high';
-  category: string;
-  assignee?: string;
-  estimatedTime?: string;
-}
+// const PRIORITY_COLORS = {
+//   low: 'green',
+//   medium: 'yellow',
+//   high: 'red',
+// } as const;
+//
+// const CATEGORY_COLORS = [
+//   'violet',
+//   'blue',
+//   'indigo',
+//   'pink',
+//   'orange',
+//   'teal',
+//   'cyan',
+// ] as const;
 
 interface TaskCardProps {
   task: Task;
 }
 
-const getCategoryColor = (category: string) => {
-  const hash = category.split('').reduce((a, b) => {
-    a = (a << 5) - a + b.charCodeAt(0);
-    return a & a;
-  }, 0);
-  return CATEGORY_COLORS[Math.abs(hash) % CATEGORY_COLORS.length];
-};
+// const getCategoryColor = (category: string) => {
+//   const hash = category.split('').reduce((a, b) => {
+//     a = (a << 5) - a + b.charCodeAt(0);
+//     return a & a;
+//   }, 0);
+//   return CATEGORY_COLORS[Math.abs(hash) % CATEGORY_COLORS.length];
+// };
 
 export const TaskCard = ({ task }: TaskCardProps) => (
   <Card
@@ -56,41 +45,41 @@ export const TaskCard = ({ task }: TaskCardProps) => (
       </Typography>
 
       <Group gap="xs">
-        <Label
-          variant="light"
-          color={getCategoryColor(task.category)}
-          size="xs"
-          style={{ textTransform: 'uppercase' }}
-        >
-          {task.category}
-        </Label>
+        {/*<Label*/}
+        {/*  variant="light"*/}
+        {/*  color={getCategoryColor(task.category)}*/}
+        {/*  size="xs"*/}
+        {/*  style={{ textTransform: 'uppercase' }}*/}
+        {/*>*/}
+        {/*  {task.category}*/}
+        {/*</Label>*/}
       </Group>
 
       <Group justify="space-between" align="center">
-        <Group gap="xs">
-          {task.assignee && (
-            <Avatar size="sm" color="orange" radius="xl">
-              {task.assignee}
-            </Avatar>
-          )}
-          {task.estimatedTime && (
-            <Group gap={4}>
-              <IconClock size={12} color="gray" />
-              <Typography size="xs" c="dimmed">
-                {task.estimatedTime}
-              </Typography>
-            </Group>
-          )}
-        </Group>
+        {/*<Group gap="xs">*/}
+        {/*  {task.assignee && (*/}
+        {/*    <Avatar size="sm" color="orange" radius="xl">*/}
+        {/*      {task.assignee}*/}
+        {/*    </Avatar>*/}
+        {/*  )}*/}
+        {/*  {task.estimatedTime && (*/}
+        {/*    <Group gap={4}>*/}
+        {/*      <IconClock size={12} color="gray" />*/}
+        {/*      <Typography size="xs" c="dimmed">*/}
+        {/*        {task.estimatedTime}*/}
+        {/*      </Typography>*/}
+        {/*    </Group>*/}
+        {/*  )}*/}
+        {/*</Group>*/}
 
-        <Label
-          variant="light"
-          color={PRIORITY_COLORS[task.priority]}
-          size="xs"
-          style={{ textTransform: 'capitalize' }}
-        >
-          {task.priority}
-        </Label>
+        {/*<Label*/}
+        {/*  variant="light"*/}
+        {/*  color={PRIORITY_COLORS[task.priority]}*/}
+        {/*  size="xs"*/}
+        {/*  style={{ textTransform: 'capitalize' }}*/}
+        {/*>*/}
+        {/*  {task.priority}*/}
+        {/*</Label>*/}
       </Group>
     </Stack>
   </Card>

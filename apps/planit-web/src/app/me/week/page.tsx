@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { Box, Flex, Group, Stack } from '@mantine/core';
 import { DayColumn } from '@/components/tasks/DayColumn/DayColumn';
-import { Task } from '@/components/tasks/TaskCard/TaskCard';
 import { Typography } from '@/shared/components';
 import { getCurrentWeekRange } from '@/shared/utils/dates/weeks';
 import { AppPageLayout } from '@/components/appShell/AppPageLayout';
+import { Task } from '@./types';
 
 type DayTasks = Record<string, Task[]>;
 
@@ -26,102 +26,46 @@ export default function Index() {
       {
         id: '1',
         title: 'Weekly Planning | Create tasks',
-        category: 'WEEKLY PLANNING',
-        priority: 'high',
-        assignee: 'NK',
-        estimatedTime: '2h',
+        // category: 'WEEKLY PLANNING',
+        // priority: 'high',
+        // assignee: 'NK',
+        // estimatedTime: '2h',
       },
       {
         id: '2',
         title: 'Review project requirements',
-        category: 'PLANNING',
-        priority: 'medium',
-        assignee: 'JD',
-      },
-      {
-        id: '2',
-        title: 'Review project requirements',
-        category: 'PLANNING',
-        priority: 'medium',
-        assignee: 'JD',
-      },
-      {
-        id: '2',
-        title: 'Review project requirements',
-        category: 'PLANNING',
-        priority: 'medium',
-        assignee: 'JD',
-      },
-      {
-        id: '2',
-        title: 'Review project requirements',
-        category: 'PLANNING',
-        priority: 'medium',
-        assignee: 'JD',
-      },
-      {
-        id: '2',
-        title: 'Review project requirements',
-        category: 'PLANNING',
-        priority: 'medium',
-        assignee: 'JD',
-      },
-      {
-        id: '2',
-        title: 'Review project requirements',
-        category: 'PLANNING',
-        priority: 'medium',
-        assignee: 'JD',
-      },
-      {
-        id: '2',
-        title: 'Review project requirements',
-        category: 'PLANNING',
-        priority: 'medium',
-        assignee: 'JD',
-      },
-      {
-        id: '2',
-        title: 'Review project requirements',
-        category: 'PLANNING',
-        priority: 'medium',
-        assignee: 'JD',
-      },
-      {
-        id: '2',
-        title: 'Review project requirements',
-        category: 'PLANNING',
-        priority: 'medium',
-        assignee: 'JD',
+        // category: 'PLANNING',
+        // priority: 'medium',
+        // assignee: 'JD',
       },
     ],
     Tuesday: [
       {
         id: '3',
         title: 'Weekly Planning | Week view',
-        category: 'WEEKLY PLANNING',
-        priority: 'medium',
-        assignee: 'NK',
-        estimatedTime: '1h',
+        // category: 'WEEKLY PLANNING',
+        // priority: 'medium',
+        // assignee: 'NK',
+        // estimatedTime: '1h',
       },
     ],
     Wednesday: [
       {
         id: '4',
         title: 'Design system updates',
-        category: 'DESIGN',
-        priority: 'low',
-        assignee: 'SM',
+        // category: 'DESIGN',
+        // priority: 'low',
+        // assignee: 'SM',
       },
     ],
     Thursday: [
       {
         id: '5',
         title: 'CI - Build pipeline setup',
-        category: 'SETUP AND CI/CD',
-        priority: 'high',
-        assignee: 'RJ',
-        estimatedTime: '3h',
+        // category: 'SETUP AND CI/CD',
+        // priority: 'high',
+        // assignee: 'RJ',
+        // estimatedTime: '3h',
       },
     ],
     Friday: [],

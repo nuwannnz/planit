@@ -17,6 +17,9 @@
     },
     {
       "path": "./libs/planit/types"
+    },
+    {
+      "path": "./libs/planit/utils"
     }
   ]
 }

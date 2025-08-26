@@ -4,6 +4,12 @@
   "include": [],
   "references": [
     {
+      "path": "../../libs/planit/utils"
+    },
+    {
+      "path": "../../libs/planit/types"
+    },
+    {
       "path": "./tsconfig.app.json"
     }
   ]

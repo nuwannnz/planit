@@ -1,1 +1,2 @@
-export * from './task.js';
+export * from './entity/task.js';
+export * from './dto/tasks.js';

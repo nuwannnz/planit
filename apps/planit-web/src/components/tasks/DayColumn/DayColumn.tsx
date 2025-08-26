@@ -1,6 +1,7 @@
 import { Stack } from '@mantine/core';
-import { TaskCard, Task } from '../TaskCard/TaskCard';
+import { TaskCard } from '../TaskCard/TaskCard';
 import { KanbanColumn } from '@/shared/components/kanbanColumn/KanbanColumn';
+import { Task } from '@./types';
 
 interface DayColumnProps {
   day: string;
